@@ -9,7 +9,7 @@ const PlaceInput = ({ onChangePlaceName, onAddPlaceName, placeName }) => (
       onChangeText={onChangePlaceName}
       value={placeName}
     />
-    <Button title="Push me" style={styles.placeButton} onPress={onAddPlaceName} color="#FF9800" />
+    <Button title="Add" style={styles.placeButton} onPress={onAddPlaceName} color="#FF9800" />
   </View>
 );
 

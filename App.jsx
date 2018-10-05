@@ -6,32 +6,51 @@ import ListItems from './src/components/ListItems/ListItems';
 
 export default class App extends Component {
   state = {
-    placeName: '',
+    place: {
+      name: '',
+      id: ''
+    },
     places: []
   };
 
   changePlaceNameHandler = value => {
-    this.setState({ placeName: value });
+    this.setState({
+      place: {
+        name: value,
+        id: ''
+      }
+    });
   };
 
+  getPlaceId = name => name + +new Date() + Math.floor(Math.random() * 10000000);
+
   addPlaceHandler = () => {
-    const { placeName } = this.state;
-    if (!placeName) return;
+    const { place } = this.state;
+    if (!place.name) return;
     this.setState(prevState => ({
-      places: prevState.places.concat(prevState.placeName)
+      places: prevState.places.concat({
+        ...prevState.place,
+        id: this.getPlaceId(prevState.place.name)
+      })
+    }));
+  };
+
+  deletePlaceHandler = id => {
+    this.setState(prevState => ({
+      places: prevState.places.filter(place => place.id !== id)
     }));
   };
 
   render() {
-    const { placeName, places } = this.state;
+    const { place, places } = this.state;
     return (
       <View style={styles.container}>
         <PlaceInput
-          placeName={placeName}
+          placeName={place.name}
           onAddPlaceName={this.addPlaceHandler}
           onChangePlaceName={this.changePlaceNameHandler}
         />
-        <ListItems places={places} />
+        <ListItems places={places} onDeletePlace={this.deletePlaceHandler} />
       </View>
     );
   }
