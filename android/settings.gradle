@@ -1,0 +1,3 @@
+rootProject.name = 'cleanRncgmax1018'
+
+include ':app'
