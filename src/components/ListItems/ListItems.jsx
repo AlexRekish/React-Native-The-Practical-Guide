@@ -9,9 +9,9 @@ class ListItems extends Component {
   _keyExtractor = item => item.id;
 
   _renderItem = ({ item }) => {
-    const { onDeletePlace } = this.props;
+    const { onSelectPlace } = this.props;
     return (
-      <ListItem name={item.name} img={item.image} onDeletePlace={() => onDeletePlace(item.id)} />
+      <ListItem name={item.name} img={item.image} onSelectPlace={() => onSelectPlace(item.id)} />
     );
   };
 

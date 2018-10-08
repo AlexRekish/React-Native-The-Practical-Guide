@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 
-const ListItem = ({ name, img, onDeletePlace }) => (
-  <TouchableOpacity onPress={onDeletePlace}>
+const ListItem = ({ name, img, onSelectPlace }) => (
+  <TouchableOpacity onPress={onSelectPlace}>
     <View style={styles.listItem}>
       <Image source={img} style={styles.imageStyle} />
       <Text style={styles.textStyle}>{name}</Text>

@@ -1,17 +1,21 @@
 import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { connect } from 'react-redux';
 
 import PlaceInput from './src/components/PlaceInput/PlaceInput';
 import ListItems from './src/components/ListItems/ListItems';
+import PlaceDetails from './src/components/PlaceDetails/PlaceDetails';
 
-export default class App extends Component {
+import Action from './src/store/actions';
+import generateId from './src/utils/idGenerator';
+
+class App extends Component {
   state = {
     place: {
       name: '',
       id: '',
       image: ''
-    },
-    places: []
+    }
   };
 
   changePlaceNameHandler = value => {
@@ -27,35 +31,29 @@ export default class App extends Component {
     });
   };
 
-  getPlaceId = name => name + +new Date() + Math.floor(Math.random() * 10000000);
-
   addPlaceHandler = () => {
     const { place } = this.state;
+    const { onAddPlace } = this.props;
     if (!place.name) return;
-    this.setState(prevState => ({
-      places: prevState.places.concat({
-        ...prevState.place,
-        id: this.getPlaceId(prevState.place.name)
-      })
-    }));
-  };
-
-  deletePlaceHandler = id => {
-    this.setState(prevState => ({
-      places: prevState.places.filter(place => place.id !== id)
-    }));
+    const newPlace = {
+      ...place,
+      id: generateId(place.name)
+    };
+    onAddPlace(newPlace);
   };
 
   render() {
-    const { place, places } = this.state;
+    const { place } = this.state;
+    const { places, onSelectPlace } = this.props;
     return (
       <View style={styles.container}>
+        <PlaceDetails />
         <PlaceInput
           placeName={place.name}
           onAddPlaceName={this.addPlaceHandler}
           onChangePlaceName={this.changePlaceNameHandler}
         />
-        <ListItems places={places} onDeletePlace={this.deletePlaceHandler} />
+        <ListItems places={places} onSelectPlace={onSelectPlace} />
       </View>
     );
   }
@@ -70,3 +68,17 @@ const styles = StyleSheet.create({
     padding: 30
   }
 });
+
+const mapStateToProps = state => ({
+  places: state.places.places
+});
+
+const mapDispatchToProps = dispatch => ({
+  onAddPlace: place => dispatch(Action.onAddPlace(place)),
+  onSelectPlace: id => dispatch(Action.onSelectPlace(id))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);
