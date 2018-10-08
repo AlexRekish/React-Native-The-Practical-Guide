@@ -44,10 +44,22 @@ class App extends Component {
 
   render() {
     const { place } = this.state;
-    const { places, onSelectPlace } = this.props;
+    const {
+      places,
+      selectedPlace,
+      isSelected,
+      onDeletePlace,
+      onSelectPlace,
+      onCloseModal
+    } = this.props;
     return (
       <View style={styles.container}>
-        <PlaceDetails />
+        <PlaceDetails
+          visible={isSelected}
+          place={selectedPlace}
+          onCloseModal={onCloseModal}
+          onDeletePlace={onDeletePlace}
+        />
         <PlaceInput
           placeName={place.name}
           onAddPlaceName={this.addPlaceHandler}
@@ -70,12 +82,16 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-  places: state.places.places
+  places: state.places.places,
+  selectedPlace: state.places.selectedPlace,
+  isSelected: state.places.isSelected
 });
 
 const mapDispatchToProps = dispatch => ({
   onAddPlace: place => dispatch(Action.onAddPlace(place)),
-  onSelectPlace: id => dispatch(Action.onSelectPlace(id))
+  onDeletePlace: id => dispatch(Action.onDeletePlace(id)),
+  onSelectPlace: id => dispatch(Action.onSelectPlace(id)),
+  onCloseModal: () => dispatch(Action.onCloseModal())
 });
 
 export default connect(
