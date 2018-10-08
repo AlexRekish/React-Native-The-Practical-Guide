@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 
-const ListItem = ({ name, onDeletePlace }) => (
+const ListItem = ({ name, img, onDeletePlace }) => (
   <TouchableOpacity onPress={onDeletePlace}>
     <View style={styles.listItem}>
+      <Image source={img} style={styles.imageStyle} />
       <Text style={styles.textStyle}>{name}</Text>
     </View>
   </TouchableOpacity>
@@ -11,13 +12,21 @@ const ListItem = ({ name, onDeletePlace }) => (
 
 const styles = StyleSheet.create({
   listItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
     width: '100%',
     marginBottom: 5,
-    padding: 10,
+    padding: 5,
     backgroundColor: '#FF9800'
   },
   textStyle: {
-    color: '#1B2325'
+    color: '#1B2325',
+    fontSize: 18
+  },
+  imageStyle: {
+    width: 30,
+    height: 30,
+    marginRight: 10
   }
 });
 

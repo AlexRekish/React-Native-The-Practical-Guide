@@ -8,7 +8,8 @@ export default class App extends Component {
   state = {
     place: {
       name: '',
-      id: ''
+      id: '',
+      image: ''
     },
     places: []
   };
@@ -17,7 +18,11 @@ export default class App extends Component {
     this.setState({
       place: {
         name: value,
-        id: ''
+        id: '',
+        image: {
+          uri:
+            'https://d28g7970w5bq8z.cloudfront.net/ai/288576/aux-head-1525290589-20180502_minsk_3df.by_360.jpg'
+        }
       }
     });
   };
