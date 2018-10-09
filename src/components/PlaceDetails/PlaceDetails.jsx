@@ -11,7 +11,7 @@ const PlaceDetails = ({ place, visible, onCloseModal, onDeletePlace }) =>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity onPress={() => onDeletePlace(place.id)} style={styles.buttonStyle}>
-          <Icon name="ios-trash" size={30} color="red" />
+          <Icon name="md-trash" size={30} color="red" />
         </TouchableOpacity>
         <Button title="Close" onPress={onCloseModal} />
       </View>
