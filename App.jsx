@@ -1,100 +1,35 @@
-import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { connect } from 'react-redux';
+import { Navigation } from 'react-native-navigation';
+import { Provider } from 'react-redux';
 
-import PlaceInput from './src/components/PlaceInput/PlaceInput';
-import ListItems from './src/components/ListItems/ListItems';
-import PlaceDetails from './src/components/PlaceDetails/PlaceDetails';
+import AuthScreen from './src/screens/Auth/AuthScreen';
+import FindPlaceScreen from './src/screens/FindPlaceScreen/FindPlaceScreen';
+import SharePlaceScreen from './src/screens/SharePlaceScreen/SharePlaceScreen';
+import PlaceDetailsScreen from './src/screens/PlaceDetails/PlaceDetails';
+import SideDrawer from './src/screens/SideDrawer/SideDrawer';
 
-import Action from './src/store/actions';
-import generateId from './src/utils/idGenerator';
+import store from './src/store/store';
 
-class App extends Component {
-  state = {
-    place: {
-      name: '',
-      id: '',
-      image: ''
-    }
-  };
+Navigation.registerComponent('awesome-places.AuthScreen', () => AuthScreen, store, Provider);
+Navigation.registerComponent(
+  'awesome-places.FindPlaceScreen',
+  () => FindPlaceScreen,
+  store,
+  Provider
+);
+Navigation.registerComponent(
+  'awesome-places.SharePlaceScreen',
+  () => SharePlaceScreen,
+  store,
+  Provider
+);
+Navigation.registerComponent('awesome-places.PlaceDetailsScreen', () => PlaceDetailsScreen);
+Navigation.registerComponent('awesome-places.SideDrawer', () => SideDrawer);
 
-  changePlaceNameHandler = value => {
-    this.setState({
-      place: {
-        name: value,
-        id: '',
-        image: {
-          uri:
-            'https://d28g7970w5bq8z.cloudfront.net/ai/288576/aux-head-1525290589-20180502_minsk_3df.by_360.jpg'
-        }
-      }
-    });
-  };
-
-  addPlaceHandler = () => {
-    const { place } = this.state;
-    const { onAddPlace } = this.props;
-    if (!place.name) return;
-    const newPlace = {
-      ...place,
-      id: generateId(place.name)
-    };
-    onAddPlace(newPlace);
-  };
-
-  render() {
-    const { place } = this.state;
-    const {
-      places,
-      selectedPlace,
-      isSelected,
-      onDeletePlace,
-      onSelectPlace,
-      onCloseModal
-    } = this.props;
-    return (
-      <View style={styles.container}>
-        <PlaceDetails
-          visible={isSelected}
-          place={selectedPlace}
-          onCloseModal={onCloseModal}
-          onDeletePlace={onDeletePlace}
-        />
-        <PlaceInput
-          placeName={place.name}
-          onAddPlaceName={this.addPlaceHandler}
-          onChangePlaceName={this.changePlaceNameHandler}
-        />
-        <ListItems places={places} onSelectPlace={onSelectPlace} />
-      </View>
-    );
-  }
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-    padding: 30
+Navigation.startSingleScreenApp({
+  screen: {
+    screen: 'awesome-places.AuthScreen', // unique ID registered with Navigation.registerScreen
+    title: 'Auth', // title of the screen as appears in the nav bar (optional)
+    navigatorStyle: {}, // override the navigator style for the screen, see "Styling the navigator" below (optional)
+    navigatorButtons: {} // override the nav buttons for the screen, see "Adding buttons to the navigator" below (optional)
   }
 });
-
-const mapStateToProps = state => ({
-  places: state.places.places,
-  selectedPlace: state.places.selectedPlace,
-  isSelected: state.places.isSelected
-});
-
-const mapDispatchToProps = dispatch => ({
-  onAddPlace: place => dispatch(Action.onAddPlace(place)),
-  onDeletePlace: id => dispatch(Action.onDeletePlace(id)),
-  onSelectPlace: id => dispatch(Action.onSelectPlace(id)),
-  onCloseModal: () => dispatch(Action.onCloseModal())
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App);
