@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, TextInput, Button, StyleSheet } from 'react-native';
 
+import { contextYellow } from '../../../colors';
+
 const PlaceInput = ({ onChangePlaceName, onAddPlaceName, placeName }) => (
   <View style={styles.inputContainer}>
     <TextInput
@@ -9,7 +11,7 @@ const PlaceInput = ({ onChangePlaceName, onAddPlaceName, placeName }) => (
       onChangeText={onChangePlaceName}
       value={placeName}
     />
-    <Button title="Add" style={styles.placeButton} onPress={onAddPlaceName} color="#FF9800" />
+    <Button title="Add" style={styles.placeButton} onPress={onAddPlaceName} color={contextYellow} />
   </View>
 );
 
