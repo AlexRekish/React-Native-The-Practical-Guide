@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 
 import ListItems from '../../components/ListItems/ListItems';
 
 import Action from '../../store/actions';
+import { mainDark } from '../../../colors';
 
 class FindPlaceScreen extends Component {
   constructor(props) {
@@ -43,12 +44,19 @@ class FindPlaceScreen extends Component {
   render() {
     const { places } = this.props;
     return (
-      <View>
+      <View style={styles.container}>
         <ListItems places={places} onSelectPlace={this.selectPlaceHandler} />
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: mainDark
+  }
+});
 
 const mapStateToProps = state => ({
   places: state.places.places

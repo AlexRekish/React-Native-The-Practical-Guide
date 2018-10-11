@@ -1,32 +1,21 @@
 import React from 'react';
-import { View, TextInput, Button, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 
-import { contextYellow } from '../../../colors';
+import CustomInput from '../UI/CustomInput/CustomInput';
 
-const PlaceInput = ({ onChangePlaceName, onAddPlaceName, placeName }) => (
-  <View style={styles.inputContainer}>
-    <TextInput
-      style={styles.placeInput}
-      placeholder="An awesome place"
-      onChangeText={onChangePlaceName}
-      value={placeName}
-    />
-    <Button title="Add" style={styles.placeButton} onPress={onAddPlaceName} color={contextYellow} />
-  </View>
+const PlaceInput = ({ onChangePlaceName, placeName }) => (
+  <CustomInput
+    placeholder="An awesome place"
+    onChangeText={onChangePlaceName}
+    value={placeName}
+    style={styles.input}
+  />
 );
 
 const styles = StyleSheet.create({
-  inputContainer: {
+  input: {
     width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  placeInput: {
-    width: '70%'
-  },
-  placeButton: {
-    width: '30%'
+    margin: 8
   }
 });
 

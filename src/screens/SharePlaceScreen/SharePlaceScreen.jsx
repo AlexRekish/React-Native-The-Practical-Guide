@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 
+import HeadingText from '../../components/UI/HeadingText/HeadingText';
+import SharePlaceImage from '../../components/SharePlaceImage/SharePlaceImage';
+import SharePlaceMap from '../../components/SharePlaceMap/SharePlaceMap';
 import PlaceInput from '../../components/PlaceInput/PlaceInput';
+import ButtonWithBackground from '../../components/UI/ButtonWithBackground/ButtonWithBackground';
 
 import Action from '../../store/actions';
 import generateId from '../../utils/idGenerator';
+import { contextYellow, mainDark } from '../../../colors';
 
 class SharePlaceScreen extends Component {
   constructor(props) {
@@ -56,13 +61,17 @@ class SharePlaceScreen extends Component {
   render() {
     const { place } = this.state;
     return (
-      <View style={styles.container}>
-        <PlaceInput
-          onAddPlaceName={this.addPlaceHandler}
-          onChangePlaceName={this.changePlaceNameHandler}
-          placeName={place.name}
-        />
-      </View>
+      <ScrollView>
+        <View style={styles.container}>
+          <HeadingText style={styles.headingText}>Share place with us!</HeadingText>
+          <SharePlaceImage />
+          <SharePlaceMap />
+          <PlaceInput onChangePlaceName={this.changePlaceNameHandler} placeName={place.name} />
+          <ButtonWithBackground onPress={this.addPlaceHandler} color={contextYellow}>
+            Add Place
+          </ButtonWithBackground>
+        </View>
+      </ScrollView>
     );
   }
 }
@@ -70,10 +79,12 @@ class SharePlaceScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-start',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: mainDark,
     padding: 30
+  },
+  headingText: {
+    color: contextYellow
   }
 });
 

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 
 import ListItem from './ListItem/ListItem';
+import { mainDark } from '../../../colors';
 
 class ListItems extends Component {
   state = {};
@@ -30,7 +31,8 @@ class ListItems extends Component {
 
 const styles = StyleSheet.create({
   listItems: {
-    width: '100%'
+    width: '100%',
+    backgroundColor: mainDark
   }
 });
 
