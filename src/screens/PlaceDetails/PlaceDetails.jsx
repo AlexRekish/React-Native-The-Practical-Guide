@@ -1,17 +1,19 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, ScrollView, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const PlaceDetails = ({ place, onDeletePlace }) => (
-  <View style={styles.placeDetailsStyle}>
-    <Image source={place.image} style={styles.imageStyle} />
-    <Text style={styles.textStyle}>{place.name}</Text>
-    <View style={styles.buttonContainer}>
-      <TouchableOpacity onPress={() => onDeletePlace(place.id)} style={styles.buttonStyle}>
-        <Icon name="md-trash" size={30} color="red" />
-      </TouchableOpacity>
+  <ScrollView>
+    <View style={styles.placeDetailsStyle}>
+      <Image source={place.image} style={styles.imageStyle} />
+      <Text style={styles.textStyle}>{place.name}</Text>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity onPress={() => onDeletePlace(place.id)} style={styles.buttonStyle}>
+          <Icon name="md-trash" size={30} color="red" />
+        </TouchableOpacity>
+      </View>
     </View>
-  </View>
+  </ScrollView>
 );
 
 const styles = StyleSheet.create({
