@@ -1,7 +1,7 @@
 import { Navigation } from 'react-native-navigation';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import { mainDark, contextYellow } from '../../../colors';
+import { mainDark, contextYellow, contextOrange } from '../../../colors';
 
 const startMainTabs = async () => {
   const [findPlaceIcon, sharePlaceIcon, menuIcon] = await Promise.all([
@@ -52,6 +52,16 @@ const startMainTabs = async () => {
         }
       }
     ],
+    tabsStyle: {
+      tabBarButtonColor: contextYellow,
+      tabBarSelectedButtonColor: contextOrange,
+      tabBarBackgroundColor: mainDark
+    },
+    appStyle: {
+      tabBarButtonColor: contextYellow,
+      tabBarSelectedButtonColor: contextOrange,
+      tabBarBackgroundColor: mainDark
+    },
     drawer: {
       left: {
         screen: 'awesome-places.SideDrawer'
