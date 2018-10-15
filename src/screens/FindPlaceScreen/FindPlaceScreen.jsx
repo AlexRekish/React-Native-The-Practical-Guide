@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import ListItems from '../../components/ListItems/ListItems';
 
 import Action from '../../store/actions';
-import { mainDark } from '../../../colors';
+import { mainDark, contextYellow } from '../../../colors';
 
 class FindPlaceScreen extends Component {
   constructor(props) {
@@ -31,6 +31,11 @@ class FindPlaceScreen extends Component {
       passProps: {
         place: selectedPlace,
         onDeletePlace: this.deletePlaceHandler
+      },
+      navigatorStyle: {
+        navBarBackgroundColor: mainDark,
+        navBarTextColor: contextYellow,
+        navBarButtonColor: contextYellow
       }
     });
   };

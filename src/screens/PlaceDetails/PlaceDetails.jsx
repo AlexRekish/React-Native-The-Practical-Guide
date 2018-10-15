@@ -1,9 +1,10 @@
 import React from 'react';
 import { View, ScrollView, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { mainDark, contextYellow } from '../../../colors';
 
 const PlaceDetails = ({ place, onDeletePlace }) => (
-  <ScrollView>
+  <ScrollView style={styles.screen}>
     <View style={styles.placeDetailsStyle}>
       <Image source={place.image} style={styles.imageStyle} />
       <Text style={styles.textStyle}>{place.name}</Text>
@@ -17,6 +18,9 @@ const PlaceDetails = ({ place, onDeletePlace }) => (
 );
 
 const styles = StyleSheet.create({
+  screen: {
+    backgroundColor: mainDark
+  },
   placeDetailsStyle: {
     paddingTop: 30
   },
@@ -29,7 +33,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 24,
     textAlign: 'center',
-    marginBottom: 10
+    marginBottom: 10,
+    color: contextYellow
   },
   buttonContainer: {
     width: '100%',

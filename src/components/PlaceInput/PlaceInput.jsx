@@ -3,12 +3,13 @@ import { StyleSheet } from 'react-native';
 
 import CustomInput from '../UI/CustomInput/CustomInput';
 
-const PlaceInput = ({ onChangePlaceName, placeName }) => (
+const PlaceInput = ({ onChangePlaceName, placeName, ...props }) => (
   <CustomInput
     placeholder="An awesome place"
     onChangeText={onChangePlaceName}
     value={placeName}
     style={styles.input}
+    {...props}
   />
 );
 
