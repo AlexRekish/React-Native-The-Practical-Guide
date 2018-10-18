@@ -1,16 +1,28 @@
 import React, { Component } from 'react';
 import { KeyboardAvoidingView, StyleSheet, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
+import firebase from 'firebase';
 
 import HeadingText from '../../components/UI/HeadingText/HeadingText';
 import SharePlaceImage from '../../components/SharePlaceImage/SharePlaceImage';
-import SharePlaceMap from '../../components/SharePlaceMap/SharePlaceMap';
 import PlaceInput from '../../components/PlaceInput/PlaceInput';
 import ButtonWithBackground from '../../components/UI/ButtonWithBackground/ButtonWithBackground';
 
 import Action from '../../store/actions';
-import generateId from '../../utils/idGenerator';
+// import generateId from '../../utils/idGenerator';
 import { contextYellow, mainDark } from '../../../colors';
+
+const config = {
+  apiKey: 'AIzaSyDTL_zBEIvQS68i70r-iYPcqw6csasmYxw',
+  authDomain: 'awesome-places-1539679578843.firebaseapp.com',
+  databaseURL: 'https://awesome-places-1539679578843.firebaseio.com',
+  projectId: 'awesome-places-1539679578843',
+  storageBucket: 'awesome-places-1539679578843.appspot.com',
+  messagingSenderId: '814037192746'
+};
+
+firebase.initializeApp(config);
+const imagesRef = firebase.storage().ref();
 
 class SharePlaceScreen extends Component {
   constructor(props) {
@@ -36,28 +48,34 @@ class SharePlaceScreen extends Component {
   };
 
   changePlaceNameHandler = value => {
-    this.setState({
+    this.setState(prevState => ({
       place: {
+        ...prevState.place,
         name: value,
         id: '',
-        image: {
-          uri:
-            'https://d28g7970w5bq8z.cloudfront.net/ai/288576/aux-head-1525290589-20180502_minsk_3df.by_360.jpg'
-        },
         touched: true
       }
-    });
+    }));
+  };
+
+  pickImageHandler = image => {
+    this.setState(prevState => ({
+      place: {
+        ...prevState.place,
+        image
+      }
+    }));
   };
 
   addPlaceHandler = () => {
     const { place } = this.state;
-    const { onAddPlace } = this.props;
+    const { onAddPlaceInit } = this.props;
     if (!place.name) return;
-    const newPlace = {
-      ...place,
-      id: generateId(place.name)
-    };
-    onAddPlace(newPlace);
+    // const newPlace = {
+    //   ...place,
+    //   id: generateId(place.name)
+    // };
+    onAddPlaceInit(place.name, place.image, imagesRef);
   };
 
   render() {
@@ -66,8 +84,7 @@ class SharePlaceScreen extends Component {
       <ScrollView style={styles.screen}>
         <KeyboardAvoidingView style={styles.container} behavior="padding">
           <HeadingText style={styles.headingText}>Share place with us!</HeadingText>
-          <SharePlaceImage />
-          <SharePlaceMap />
+          <SharePlaceImage onPickImage={this.pickImageHandler} />
           <PlaceInput
             onChangePlaceName={this.changePlaceNameHandler}
             placeName={place.name}
@@ -77,7 +94,7 @@ class SharePlaceScreen extends Component {
           <ButtonWithBackground
             onPress={this.addPlaceHandler}
             color={contextYellow}
-            disabled={!place.name}
+            disabled={!place.name || !place.image.uri}
           >
             Add Place
           </ButtonWithBackground>
@@ -107,7 +124,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onAddPlace: place => dispatch(Action.onAddPlace(place)),
+  onAddPlaceInit: (name, image, ref) => dispatch(Action.onAddPlaceInit(name, image, ref)),
   onDeletePlace: id => dispatch(Action.onDeletePlace(id))
 });
 

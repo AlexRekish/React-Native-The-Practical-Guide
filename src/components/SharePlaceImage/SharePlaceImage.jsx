@@ -1,21 +1,43 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { View, Image, StyleSheet } from 'react-native';
+import ImagePicker from 'react-native-image-picker';
 
-import imagePlaceholder from '../../assets/img/beautiful-place.jpg';
 import ButtonWithBackground from '../UI/ButtonWithBackground/ButtonWithBackground';
 
 import { contextYellow } from '../../../colors';
 
-const SharePlaceImage = () => (
-  <View style={styles.container}>
-    <View style={styles.imageContainer}>
-      <Image source={imagePlaceholder} style={styles.imagePreview} />
-    </View>
-    <ButtonWithBackground onPress={() => {}} color={contextYellow}>
-      Pick image
-    </ButtonWithBackground>
-  </View>
-);
+class SharePlaceImage extends Component {
+  state = {
+    pickedImage: null
+  };
+
+  pickImageHandler = () => {
+    const { onPickImage } = this.props;
+    const metadata = {
+      contentType: 'image/jpeg'
+    };
+    ImagePicker.showImagePicker({ title: 'Choose an image...' }, res => {
+      if (res.didCancel) return;
+      if (res.error) return;
+      this.setState({ pickedImage: { uri: res.uri } });
+      onPickImage({ uri: res.uri, data: res.data, fileName: res.fileName, metadata });
+    });
+  };
+
+  render() {
+    const { pickedImage } = this.state;
+    return (
+      <View style={styles.container}>
+        <View style={styles.imageContainer}>
+          <Image source={pickedImage} style={styles.imagePreview} />
+        </View>
+        <ButtonWithBackground onPress={this.pickImageHandler} color={contextYellow}>
+          Pick image
+        </ButtonWithBackground>
+      </View>
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -26,13 +48,12 @@ const styles = StyleSheet.create({
   imageContainer: {
     margin: 10,
     width: '100%',
-    height: 200,
-    borderWidth: 1,
-    borderColor: contextYellow
+    height: 200
   },
   imagePreview: {
     width: '100%',
-    height: '100%'
+    height: '100%',
+    borderRadius: 5
   }
 });
 
