@@ -86,7 +86,7 @@ class SharePlaceScreen extends Component {
             touched={place.touched}
           />
           {isLoading ? (
-            <ActivityIndicator style={styles.spinner} />
+            <ActivityIndicator style={styles.spinner} color={contextYellow} />
           ) : (
             <ButtonWithBackground
               onPress={this.addPlaceHandler}

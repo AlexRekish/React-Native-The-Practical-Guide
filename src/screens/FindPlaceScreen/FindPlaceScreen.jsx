@@ -59,7 +59,7 @@ class FindPlaceScreen extends Component {
     const { places, isLoading } = this.props;
     const content = isLoading ? (
       <View style={styles.container}>
-        <ActivityIndicator />
+        <ActivityIndicator size="large" color={contextYellow} />
       </View>
     ) : (
       <View style={styles.container}>
