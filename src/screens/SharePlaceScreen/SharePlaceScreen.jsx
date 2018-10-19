@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { KeyboardAvoidingView, StyleSheet, ScrollView } from 'react-native';
+import { KeyboardAvoidingView, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import firebase from 'firebase';
 
@@ -9,20 +9,17 @@ import PlaceInput from '../../components/PlaceInput/PlaceInput';
 import ButtonWithBackground from '../../components/UI/ButtonWithBackground/ButtonWithBackground';
 
 import Action from '../../store/actions';
-// import generateId from '../../utils/idGenerator';
 import { contextYellow, mainDark } from '../../../colors';
 
 const config = {
   apiKey: 'AIzaSyDTL_zBEIvQS68i70r-iYPcqw6csasmYxw',
   authDomain: 'awesome-places-1539679578843.firebaseapp.com',
   databaseURL: 'https://awesome-places-1539679578843.firebaseio.com',
-  projectId: 'awesome-places-1539679578843',
-  storageBucket: 'awesome-places-1539679578843.appspot.com',
-  messagingSenderId: '814037192746'
+  storageBucket: 'awesome-places-1539679578843.appspot.com'
 };
 
 firebase.initializeApp(config);
-const imagesRef = firebase.storage().ref();
+export const imagesRef = firebase.storage().ref();
 
 class SharePlaceScreen extends Component {
   constructor(props) {
@@ -71,15 +68,12 @@ class SharePlaceScreen extends Component {
     const { place } = this.state;
     const { onAddPlaceInit } = this.props;
     if (!place.name) return;
-    // const newPlace = {
-    //   ...place,
-    //   id: generateId(place.name)
-    // };
     onAddPlaceInit(place.name, place.image, imagesRef);
   };
 
   render() {
     const { place } = this.state;
+    const { isLoading } = this.props;
     return (
       <ScrollView style={styles.screen}>
         <KeyboardAvoidingView style={styles.container} behavior="padding">
@@ -91,13 +85,17 @@ class SharePlaceScreen extends Component {
             valid={place.name}
             touched={place.touched}
           />
-          <ButtonWithBackground
-            onPress={this.addPlaceHandler}
-            color={contextYellow}
-            disabled={!place.name || !place.image.uri}
-          >
-            Add Place
-          </ButtonWithBackground>
+          {isLoading ? (
+            <ActivityIndicator style={styles.spinner} />
+          ) : (
+            <ButtonWithBackground
+              onPress={this.addPlaceHandler}
+              color={contextYellow}
+              disabled={!place.name || !place.image.uri}
+            >
+              Add Place
+            </ButtonWithBackground>
+          )}
         </KeyboardAvoidingView>
       </ScrollView>
     );
@@ -116,11 +114,15 @@ const styles = StyleSheet.create({
   },
   headingText: {
     color: contextYellow
+  },
+  spinner: {
+    margin: 8
   }
 });
 
 const mapStateToProps = state => ({
-  places: state.places.places
+  places: state.places.places,
+  isLoading: state.ui.isLoading
 });
 
 const mapDispatchToProps = dispatch => ({

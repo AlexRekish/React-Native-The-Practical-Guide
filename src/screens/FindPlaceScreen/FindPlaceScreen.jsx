@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 
 import ListItems from '../../components/ListItems/ListItems';
 
 import Action from '../../store/actions';
 import { mainDark, contextYellow } from '../../../colors';
+import { imagesRef } from '../SharePlaceScreen/SharePlaceScreen';
 
 class FindPlaceScreen extends Component {
   constructor(props) {
@@ -14,12 +15,20 @@ class FindPlaceScreen extends Component {
     navigator.setOnNavigatorEvent(this.onNavigatorEvent);
   }
 
+  componentDidMount() {
+    const { onStartLoadPlaces } = this.props;
+    onStartLoadPlaces();
+  }
+
   onNavigatorEvent = evt => {
-    const { navigator } = this.props;
+    const { navigator, onStartLoadPlaces } = this.props;
     if (evt.type === 'NavBarButtonPress' && evt.id === 'sideDrawerToggle')
       navigator.toggleDrawer({
         side: 'left'
       });
+    if (evt.id === 'willAppear') {
+      onStartLoadPlaces();
+    }
   };
 
   selectPlaceHandler = id => {
@@ -40,19 +49,24 @@ class FindPlaceScreen extends Component {
     });
   };
 
-  deletePlaceHandler = id => {
+  deletePlaceHandler = (id, imageName) => {
     const { onDeletePlace, navigator } = this.props;
-    onDeletePlace(id);
+    onDeletePlace(id, imageName, imagesRef);
     navigator.pop();
   };
 
   render() {
-    const { places } = this.props;
-    return (
+    const { places, isLoading } = this.props;
+    const content = isLoading ? (
+      <View style={styles.container}>
+        <ActivityIndicator />
+      </View>
+    ) : (
       <View style={styles.container}>
         <ListItems places={places} onSelectPlace={this.selectPlaceHandler} />
       </View>
     );
+    return places.length ? content : <View style={styles.container} />;
   }
 }
 
@@ -64,11 +78,13 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-  places: state.places.places
+  places: state.places.places,
+  isLoading: state.ui.isLoading
 });
 
 const mapDispatchToProps = dispatch => ({
-  onDeletePlace: id => dispatch(Action.onDeletePlace(id))
+  onDeletePlace: (id, imageName, ref) => dispatch(Action.onDeletePlaceInit(id, imageName, ref)),
+  onStartLoadPlaces: () => dispatch(Action.onStartLoadPlaces())
 });
 
 export default connect(

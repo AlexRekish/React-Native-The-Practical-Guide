@@ -1,6 +1,7 @@
-import dbEndpoint from './playloads';
+import dbEndpoint, { getDbEndpointWithId } from './playloads';
+import { deleteImage } from './imagesService';
 
-const uploadPlace = async place => {
+export const uploadPlace = async place => {
   const settings = {
     method: 'POST',
     body: JSON.stringify(place)
@@ -10,4 +11,25 @@ const uploadPlace = async place => {
   return id.name;
 };
 
-export default uploadPlace;
+export const loadPlaces = async () => {
+  const res = await fetch(dbEndpoint);
+  const places = await res.json();
+  const placesArr = [];
+  /* eslint-disable*/
+  for (const key in places) {
+    placesArr.push({
+      ...places[key],
+      id: key
+    });
+  }
+  /* eslint-enable */
+  return placesArr;
+};
+
+export const deletePlace = async (id, imageName, ref) => {
+  const settings = {
+    method: 'DELETE'
+  };
+  await fetch(getDbEndpointWithId(id), settings);
+  deleteImage(imageName, ref);
+};

@@ -24,7 +24,8 @@ module.exports = {
     'react-native/no-unused-styles': 2,
     'react-native/split-platform-components': 2,
     'react-native/no-inline-styles': 2,
-    'react-native/no-color-literals': 'off'
+    'react-native/no-color-literals': 'off',
+    'no-alert': 'off'
   },
   env: {
     jest: true,

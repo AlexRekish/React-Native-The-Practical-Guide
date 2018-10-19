@@ -1,20 +1,20 @@
 import { ActionType } from '../actions';
 
 const initialState = {
-  places: []
+  isLoading: false
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case ActionType.LOAD_PLACES_SUCCEED:
+    case ActionType.START_LOAD_DATA:
       return {
         ...state,
-        places: action.places
+        isLoading: true
       };
-    case ActionType.LOAD_PLACES_FAILED:
+    case ActionType.END_LOAD_DATA:
       return {
         ...state,
-        places: []
+        isLoading: false
       };
     default:
       return state;

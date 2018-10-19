@@ -1,11 +1,14 @@
 import getPlaceActions, { PlacesAction } from './placesActions';
+import getUiActions, { UiAction } from './ui';
 
 export const ActionType = {
-  ...PlacesAction
+  ...PlacesAction,
+  ...UiAction
 };
 
 const Action = {
-  ...getPlaceActions()
+  ...getPlaceActions(),
+  ...getUiActions()
 };
 
 export default Action;

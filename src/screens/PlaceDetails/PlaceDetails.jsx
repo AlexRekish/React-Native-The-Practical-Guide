@@ -9,7 +9,10 @@ const PlaceDetails = ({ place, onDeletePlace }) => (
       <Image source={place.image} style={styles.imageStyle} />
       <Text style={styles.textStyle}>{place.name}</Text>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={() => onDeletePlace(place.id)} style={styles.buttonStyle}>
+        <TouchableOpacity
+          onPress={() => onDeletePlace(place.id, place.image.name)}
+          style={styles.buttonStyle}
+        >
           <Icon name="md-trash" size={30} color="red" />
         </TouchableOpacity>
       </View>
